@@ -1,9 +1,39 @@
 #pragma once 
 
-#ifndef TEST_LOCAL
+#ifdef ARDUINO
 #include "Arduino.h"
 #else
 #include <cstdint>
+#include <iostream>
+
+class serial_t {
+public:
+    serial_t() = default;
+    ~serial_t() = default;
+
+    template <typename T>
+    void
+    print(T& arg)
+    {
+        std::cout << arg;
+    }
+
+    template <typename T>
+    void
+    println(T& arg)
+    {
+        std::cout << arg << std::endl;
+    }
+
+    void
+    println()
+    {
+        std::cout << std::endl;
+    }
+private:
+};
+
+serial_t Serial;
 #endif
 
 #include "filter.hpp"
@@ -13,14 +43,21 @@
 
 template <template <typename> class filter_t, typename value_t = uint16_t, uint8_t MaxIn = 10, uint8_t MaxOut = 7>
 class Pot {
+    using read_func = value_t(*)(int);
+
+    read_func read_value;
     uint8_t analogPin;
     uint8_t index;
     filter_t<value_t> filter;
     hysteresis<value_t, MaxIn, MaxOut> hyst;
     value_t last_value;
+
 public:
 
+#ifdef ARDUINO
     Pot(float filter_length_or_scaling);
+#endif
+    Pot(float filter_length_or_scaling, read_func read);
     ~Pot() = default;
 
     void 
@@ -42,9 +79,16 @@ public:
     debugPlot(bool endl);
 };
 
+#ifdef ARDUINO
 template <template <typename> class filter_t, typename value_t, uint8_t MaxIn, uint8_t MaxOut>
 Pot<filter_t, value_t, MaxIn, MaxOut>::Pot(float filter_length_or_scaling)
-    : filter(filter_length_or_scaling)
+    : filter(filter_length_or_scaling), read_value(analogRead)
+{}
+#endif
+
+template <template <typename> class filter_t, typename value_t, uint8_t MaxIn, uint8_t MaxOut>
+Pot<filter_t, value_t, MaxIn, MaxOut>::Pot(float filter_length_or_scaling, read_func read)
+    : filter(filter_length_or_scaling), read_value(read)
 {}
 
 template <template <typename> class filter_t, typename value_t, uint8_t MaxIn, uint8_t MaxOut>
@@ -59,7 +103,7 @@ template <template <typename> class filter_t, typename value_t, uint8_t MaxIn, u
 bool 
 Pot<filter_t, value_t, MaxIn, MaxOut>::update()
 {
-    uint16_t read_val = analogRead(analogPin);
+    uint16_t read_val = read_value(analogPin);
 
     if (hyst.update(filter.update(read_val))) {
         last_value = hyst.get();

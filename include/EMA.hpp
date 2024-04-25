@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef TEST_LOCAL
+#ifndef ARDUINO
 #include <cstdint>
 #endif
 

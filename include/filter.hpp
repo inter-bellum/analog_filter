@@ -1,6 +1,8 @@
 #pragma once
 
+#ifndef ARDUINO
 #include <cstdint>
+#endif
 
 template <typename T>
 class Filter {
