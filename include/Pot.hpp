@@ -6,7 +6,6 @@
 #include <cstdint>
 #endif
 
-#include "globals.h"
 #include "filter.hpp"
 #include "hysteresis.hpp"
 
