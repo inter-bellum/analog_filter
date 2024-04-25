@@ -66,6 +66,9 @@ public:
     bool
     update();
 
+    bool
+    update(value_t value);
+
     value_t 
     read();
 
@@ -106,6 +109,18 @@ Pot<filter_t, value_t, MaxIn, MaxOut>::update()
     uint16_t read_val = read_value(analogPin);
 
     if (hyst.update(filter.update(read_val))) {
+        last_value = hyst.get();
+        return true;
+    }
+
+    return false;
+}
+
+template <template <typename> class filter_t, typename value_t, uint8_t MaxIn, uint8_t MaxOut>
+bool 
+Pot<filter_t, value_t, MaxIn, MaxOut>::update(value_t value)
+{
+    if (hyst.update(filter.update(value))) {
         last_value = hyst.get();
         return true;
     }
