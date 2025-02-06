@@ -3,6 +3,8 @@
 #include <chrono>
 
 #include "EMA.hpp"
+#include "MA.hpp"
+#include "no_filter.hpp"
 #include "Pot.hpp"
 
 uint16_t cycles = 0;
@@ -14,6 +16,8 @@ read(int pin)
 }
 
 Pot<EMA> p{0.1, read};
+Pot<MA> p2{0.1, read};
+Pot<no_filter> p3{0.1, read};
 
 int
 main(int argc, char** argv)

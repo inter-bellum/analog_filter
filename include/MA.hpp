@@ -25,7 +25,7 @@ private:
     idx_t idx;
     idx_t num_values;
     T filtered_value;
-    T values[];
+    T* values;
 };
 
 template <typename T>
@@ -36,7 +36,7 @@ MA<T>::MA(float num_values)
 template <typename T>
 MA<T>::~MA()
 {
-    delete this->values;
+    delete[] this->values;
 }
 
 template <typename T>
