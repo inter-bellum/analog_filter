@@ -1,3 +1,5 @@
+#pragma once
+
 #include "filter.hpp"
 
 template <typename T>
