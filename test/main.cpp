@@ -9,8 +9,8 @@
 
 uint16_t cycles = 0;
 
-uint16_t
-read(int pin)
+int
+read(uint8_t pin)
 {
     return ((cycles++ % 100) > 50) * 1023;
 }

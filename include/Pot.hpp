@@ -41,9 +41,9 @@ serial_t Serial;
 
 #define HISTORY_SIZE  100
 
-template <template <typename> class filter_t, typename value_t = uint16_t, uint8_t MaxIn = 10, uint8_t MaxOut = 7>
+template <template <typename> class filter_t, typename value_t=int, uint8_t MaxIn = 10, uint8_t MaxOut = 7>
 class Pot {
-    using read_func = value_t(*)(int);
+    using read_func = value_t(*)(uint8_t);
 
     read_func read_value;
     uint8_t analogPin;
