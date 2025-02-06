@@ -10,5 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(test_filter main.cpp)
 
+target_compile_options(test_filter PUBLIC -Wall)
+
 target_include_directories(test_filter PRIVATE
     ../include)

@@ -45,12 +45,12 @@ template <template <typename> class filter_t, typename value_t=int, uint8_t MaxI
 class Pot {
     using read_func = value_t(*)(uint8_t);
 
-    read_func read_value;
-    uint8_t analogPin;
-    uint8_t index;
     filter_t<value_t> filter;
     hysteresis<value_t, MaxIn, MaxOut> hyst;
+    read_func read_value;
     value_t last_value;
+    uint8_t analogPin;
+    uint8_t index;
 
 public:
 
