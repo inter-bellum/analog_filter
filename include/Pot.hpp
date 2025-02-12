@@ -108,8 +108,8 @@ Pot<filter_t, value_t, MaxIn, MaxOut>::update()
 {
     uint16_t read_val = read_value(analogPin);
 
-    if (filter.update(hyst.update(read_val))) {
-        last_value = hyst.get();
+    if (hyst.update(read_val)) {
+        last_value = filter.update(hyst.get());
         return true;
     }
 
@@ -120,8 +120,8 @@ template <template <typename> class filter_t, typename value_t, uint8_t MaxIn, u
 bool 
 Pot<filter_t, value_t, MaxIn, MaxOut>::update(value_t value)
 {
-    if (hyst.update(filter.update(value))) {
-        last_value = hyst.get();
+    if (hyst.update(value)) {
+        last_value = filter.update(hyst.get());
         return true;
     }
 
