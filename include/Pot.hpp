@@ -109,8 +109,12 @@ Pot<filter_t, value_t, MaxIn, MaxOut>::update()
     uint16_t read_val = read_value(analogPin);
 
     if (hyst.update(read_val)) {
-        last_value = filter.update(hyst.get());
-        return true;
+        if (filter.update(hyst.get()) != last_value) {
+            last_value = filter.get();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     return false;
@@ -121,8 +125,12 @@ bool
 Pot<filter_t, value_t, MaxIn, MaxOut>::update(value_t value)
 {
     if (hyst.update(value)) {
-        last_value = filter.update(hyst.get());
-        return true;
+        if (filter.update(hyst.get()) != last_value) {
+            last_value = filter.get();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     return false;
