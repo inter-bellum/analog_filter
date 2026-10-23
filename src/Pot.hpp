@@ -108,16 +108,14 @@ Pot<filter_t, value_t, MaxIn, MaxOut>::update()
 {
     uint16_t read_val = read_value(analogPin);
 
-    if (hyst.update(read_val)) {
-        if (filter.update(hyst.get()) != last_value) {
-            last_value = filter.get();
-            return true;
-        } else {
-            return false;
-        }
+    (void) hyst.update(read_val);
+    
+    if (filter.update(hyst.get()) != last_value) {
+        last_value = filter.get();
+        return true;
+    } else {
+        return false;
     }
-
-    return false;
 }
 
 template <template <typename> class filter_t, typename value_t, uint8_t MaxIn, uint8_t MaxOut>
